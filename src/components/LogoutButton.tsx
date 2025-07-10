@@ -12,7 +12,7 @@ export default function LogoutButton() {
   const handleLogout = () => {
     logout()
     toast.success("Logged out successfully")
-    router.push("/login")
+    router.push("/auth")
   }
 
   return (
