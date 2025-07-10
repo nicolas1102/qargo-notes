@@ -6,11 +6,19 @@ import { useNotesStore } from "@/store/notesStore"
 import NoteCard from './NoteCard'
 import { Skeleton } from "@/components/ui/skeleton"
 import { Inbox } from "lucide-react"
+import { Input } from "@/components/ui/input"
+
 
 export default function NotesList() {
   const user = useAuthStore((state) => state.user)
   const { notes, setNotes } = useNotesStore()
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
+
+  const filteredNotes = notes.filter(note =>
+    note.title.toLowerCase().includes(search.toLowerCase()) ||
+    note.content?.toLowerCase().includes(search.toLowerCase())
+  )
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -54,8 +62,14 @@ export default function NotesList() {
 
   return (
     <div className="w-full h-full">
+      <Input
+        placeholder="Search notes..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="max-w-md mx-auto mb-4"
+      />
       <div className="grid max-w-6xl gap-4 px-4 py-6 mx-auto sm:grid-cols-2 lg:grid-cols-3">
-        {notes.map((note) => (
+        {filteredNotes.map((note) => (
           <div key={note.id} className="w-full max-w-sm min-w-[280px] mx-auto">
             <NoteCard note={note} />
           </div>
