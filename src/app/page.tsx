@@ -1,26 +1,26 @@
 'use client'
 
 import { useAuthStore } from "@/store/authStore"
-import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import NoteForm from "@/components/NoteForm"
+import NotesList from "@/components/NotesList"
 
-export default function Home() {
+export default function HomePage() {
   const user = useAuthStore((state) => state.user)
-  const login = useAuthStore((state) => state.login)
-  const logout = useAuthStore((state) => state.logout)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) router.push("/login")
+  }, [user, router])
+
+  if (!user) return null
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen gap-4">
-      <h1 className="text-2xl font-bold">Qargo Notes</h1>
-      {user ? (
-        <>
-          <p>Logged in as: {user.email}</p>
-          <Button onClick={logout}>Logout</Button>
-        </>
-      ) : (
-        <Button onClick={() => login({ id: "123", email: "demo@test.com" })}>
-          Simulate Login
-        </Button>
-      )}
+    <main className="flex flex-col items-center gap-8 p-6">
+      <h1 className="text-2xl font-bold">Welcome, {user.email}</h1>
+      <NoteForm />
+      <NotesList />
     </main>
   )
 }
