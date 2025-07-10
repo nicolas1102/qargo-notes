@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export default function RegisterForm() {
   const login = useAuthStore((state) => state.login)
@@ -33,10 +34,12 @@ export default function RegisterForm() {
 
       if (!res.ok) {
         setError(data.error || "Register failed")
+        toast.error(data.error || "Register failed")
         return
       }
 
       login(data.user)
+      toast.success("Account created successfully")
       router.push("/")
     } catch (err) {
       console.error("Register error:", err)

@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from "@/store/authStore"
 import { useNotesStore } from "@/store/notesStore"
+import { toast } from "sonner"
 
 export default function NoteForm() {
   const user = useAuthStore((state) => state.user)
@@ -15,10 +16,21 @@ export default function NoteForm() {
   const [content, setContent] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async () => {
-    if (!title.trim() || !user) return
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!title.trim()) {
+      toast.error("Title is required")
+      return
+    }
+
+    if (!user) {
+      toast.error("User not authenticated")
+      return
+    }
 
     setLoading(true)
+
     const res = await fetch("/api/notes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -26,17 +38,21 @@ export default function NoteForm() {
     })
 
     const data = await res.json()
+
     if (res.ok) {
       addNote(data.note)
+      toast.success("Note created")
       setTitle("")
       setContent("")
+    } else {
+      toast.error("Failed to create note")
     }
 
     setLoading(false)
   }
 
   return (
-    <div className="w-full max-w-md space-y-2">
+    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-2">
       <Input
         placeholder="Note title"
         value={title}
@@ -47,9 +63,9 @@ export default function NoteForm() {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <Button onClick={handleSubmit} disabled={loading}>
+      <Button type="submit" disabled={loading}>
         {loading ? "Saving..." : "Add Note"}
       </Button>
-    </div>
+    </form>
   )
 }

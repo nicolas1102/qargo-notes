@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useAuthStore } from "@/store/authStore"
 import { useNotesStore } from "@/store/notesStore"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 export default function NotesList() {
   const user = useAuthStore((state) => state.user)
@@ -20,8 +21,14 @@ export default function NotesList() {
   }, [user, setNotes])
 
   const handleDelete = async (id: string) => {
-    await fetch(`/api/notes/${id}`, { method: "DELETE" })
-    removeNote(id)
+    const res = await fetch(`/api/notes/${id}`, { method: "DELETE" })
+
+    if (res.ok) {
+      removeNote(id)
+      toast.success("Note deleted")
+    } else {
+      toast.error("Failed to delete note")
+    }
   }
 
   if (notes.length === 0) {

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export default function LoginForm() {
   const login = useAuthStore((state) => state.login)
@@ -33,8 +34,11 @@ export default function LoginForm() {
 
       if (!res.ok) {
         setError(data.error || "Login failed")
+        toast.error(data.error || "Login failed")
         return
       }
+
+      toast.success(`Welcome, ${data.user.email}`)
 
       login(data.user)
       router.push("/")
