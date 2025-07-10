@@ -15,8 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Navbar />
-        {children}
-        <Footer />
+        <main className="pt-[72px]">
+          {children}
+          <Footer />
+        </main>
         <Toaster richColors closeButton />
       </body>
     </html>

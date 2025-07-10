@@ -5,13 +5,16 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { useAuthStore } from "@/store/authStore"
 import { useNotesStore } from "@/store/notesStore"
 import { noteSchema } from "@/lib/schemas/note"
 import { toast } from "sonner"
 
-export default function NoteForm() {
+type Props = {
+  onSuccess?: () => void
+}
+
+export default function NoteForm({ onSuccess }: Props) {
   const user = useAuthStore((state) => state.user)
   const addNote = useNotesStore((state) => state.addNote)
 
@@ -51,6 +54,7 @@ export default function NoteForm() {
       toast.success("Note created")
       setTitle("")
       setContent("")
+      onSuccess?.()
     } else {
       toast.error("Failed to create note")
     }
@@ -59,43 +63,25 @@ export default function NoteForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <CardHeader>
-          <CardTitle>New Note</CardTitle>
-          <CardDescription>
-            Add a new note with a title and optional content.
-          </CardDescription>
-        </CardHeader>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Label htmlFor="title">Title</Label>
+      <Input
+        id="title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
-        <CardContent className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              placeholder="Note title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
+      <Label htmlFor="content">Content</Label>
+      <Textarea
+        id="content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
 
-          <div className="grid gap-2">
-            <Label htmlFor="content">Content</Label>
-            <Textarea
-              id="content"
-              placeholder="Note content (optional)"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
-        </CardContent>
+      <Button type="submit" disabled={loading}>
+        {loading ? "Saving..." : "Add Note"}
+      </Button>
+    </form>
 
-        <CardFooter>
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "Saving..." : "Add Note"}
-          </Button>
-        </CardFooter>
-      </form>
-    </Card>
   )
 }
