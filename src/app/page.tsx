@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import NotesList from "@/components/NotesList"
 import NoteDialog from '@/components/NoteDialog'
+import { Loader2 } from "lucide-react"
 
 export default function HomePage() {
   const user = useAuthStore((state) => state.user)
@@ -17,7 +18,17 @@ export default function HomePage() {
     }
   }, [hydrated, user, router])
 
-  if (!hydrated) return null // o un loader si prefieres
+
+  if (!hydrated) {
+    return (
+      <main className="flex items-center justify-center h-screen">
+        <div className="flex flex-col items-center gap-4 text-muted-foreground">
+          <Loader2 className="w-10 h-10 animate-spin" />
+          <p className="text-lg font-medium">Loading your notes...</p>
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="flex flex-col items-center gap-8 p-6">
