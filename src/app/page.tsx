@@ -11,7 +11,7 @@ export default function HomePage() {
   const router = useRouter()
 
   useEffect(() => {
-    if (!user) router.push("/login")
+    if (!user) router.push("/auth")
   }, [user, router])
 
   if (!user) return null

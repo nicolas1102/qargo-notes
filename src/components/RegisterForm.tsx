@@ -4,11 +4,11 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardDescription, CardFooter, CardTitle } from "@/components/ui/card"
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const login = useAuthStore((state) => state.login)
   const router = useRouter()
 
@@ -23,7 +23,7 @@ export default function LoginForm() {
     setError("")
 
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -32,14 +32,14 @@ export default function LoginForm() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || "Login failed")
+        setError(data.error || "Register failed")
         return
       }
 
       login(data.user)
       router.push("/")
     } catch (err) {
-      console.error("Login error:", err)
+      console.error("Register error:", err)
       setError("Unexpected error")
     } finally {
       setLoading(false)
@@ -48,14 +48,14 @@ export default function LoginForm() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>
-          Access your notes by logging in with your email and password.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <CardHeader>
+          <CardTitle>Register</CardTitle>
+          <CardDescription>
+            Register with your email and password to create and manage your personal notes.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-6">
           <Label htmlFor="email">Email</Label>
           <Input
             type="email"
@@ -64,7 +64,7 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="tabs-demo-name">Password</Label>
           <Input
             type="password"
             value={password}
@@ -73,13 +73,14 @@ export default function LoginForm() {
           />
 
           {error && <p className="text-sm text-red-500">{error}</p>}
-        </form>
-      </CardContent>
-      <CardFooter>
-        <Button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </Button>
-      </CardFooter>
+
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </Button>
+        </CardFooter>
+      </form>
     </Card>
   )
 }
