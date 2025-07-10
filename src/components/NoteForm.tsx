@@ -30,7 +30,10 @@ export default function NoteForm({ onSuccess }: Props) {
       return
     }
 
-    const result = noteSchema.safeParse({ title, content, userId: user.id })
+    const trimmedTitle = title.trim()
+    const trimmedContent = content.trim()
+
+    const result = noteSchema.safeParse({ title: trimmedTitle, content: trimmedContent, userId: user.id })
 
     if (!result.success) {
       const errorMessages = result.error.flatten().fieldErrors

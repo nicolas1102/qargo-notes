@@ -44,7 +44,7 @@ export default function NoteCard({ note }: { note: Note }) {
 
   return (
     <Card className="relative w-full p-4">
-      <CardHeader className="pb-2">
+      <CardHeader className="">
         <CardTitle className="text-lg">{note.title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
