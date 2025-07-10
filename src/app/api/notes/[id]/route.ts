@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma"
 import { NextRequest, NextResponse } from "next/server"
 
-export async function DELETE(request: NextRequest, context: any) {
-  const id = context?.params?.id
+export async function DELETE(request: NextRequest, context: unknown) {
+  const { params } = context as { params: { id: string } }
+  const { id } = params
 
   if (!id) {
     return NextResponse.json({ error: "Note ID is required" }, { status: 400 })
