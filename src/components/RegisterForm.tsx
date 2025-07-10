@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardDescription, CardFooter, CardTitle }
 import { useAuthStore } from "@/store/authStore"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { authSchema } from "@/lib/schemas/auth"
 
 export default function RegisterForm() {
   const login = useAuthStore((state) => state.login)
@@ -22,6 +23,16 @@ export default function RegisterForm() {
     e.preventDefault()
     setLoading(true)
     setError("")
+
+    const result = authSchema.safeParse({ email, password })
+
+    if (!result.success) {
+      const errorMessages = result.error.flatten().fieldErrors
+      const firstError = errorMessages.email?.[0] || errorMessages.password?.[0] || "Invalid data"
+      toast.error(firstError)
+      setLoading(false)
+      return
+    }
 
     try {
       const res = await fetch("/api/auth/register", {
