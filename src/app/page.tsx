@@ -33,6 +33,9 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center gap-8 p-6">
       <h1 className="text-2xl font-bold">Welcome, {user?.email}</h1>
+      <p className="text-sm text-muted-foreground">
+        Create, save, and manage your personal notes with ease.
+      </p>
       <NoteDialog />
       <NotesList />
     </main>
