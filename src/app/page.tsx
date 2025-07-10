@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import NoteForm from "@/components/NoteForm"
 import NotesList from "@/components/NotesList"
+import LogoutButton from '@/components/LogoutButton'
 
 export default function HomePage() {
   const user = useAuthStore((state) => state.user)
@@ -22,6 +23,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center gap-8 p-6">
       <h1 className="text-2xl font-bold">Welcome, {user?.email}</h1>
+      <LogoutButton />
       <NoteForm />
       <NotesList />
     </main>
