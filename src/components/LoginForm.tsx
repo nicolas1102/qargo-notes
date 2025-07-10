@@ -48,14 +48,14 @@ export default function LoginForm() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>
-          Access your notes by logging in with your email and password.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+          <CardDescription>
+            Access your notes by logging in with your email and password.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-6">
           <Label htmlFor="email">Email</Label>
           <Input
             type="email"
@@ -73,13 +73,13 @@ export default function LoginForm() {
           />
 
           {error && <p className="text-sm text-red-500">{error}</p>}
-        </form>
-      </CardContent>
-      <CardFooter>
-        <Button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </Button>
-      </CardFooter>
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </Button>
+        </CardFooter>
+      </form>
     </Card>
   )
 }
