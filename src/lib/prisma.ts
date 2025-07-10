@@ -1,4 +1,4 @@
-// testing prisma conection
+// prisma conection
 
 import { PrismaClient } from '@prisma/client'
 
