@@ -1,17 +1,22 @@
+import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { NextRequest, NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Record<string, string> }
 ) {
-  const { id } = context.params
+  const id = context.params.id
 
   if (!id) {
     return NextResponse.json({ error: "Note ID is required" }, { status: 400 })
   }
 
-  await prisma.note.delete({ where: { id } })
-
-  return NextResponse.json({ message: "Note deleted" })
+  try {
+    await prisma.note.delete({ where: { id } })
+    return NextResponse.json({ message: "Note deleted" })
+  } catch (error) {
+    console.error("Delete error:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
 }
