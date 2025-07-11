@@ -9,14 +9,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email and password required" }, { status: 400 })
     }
 
-    // Verify if user already exist
     const existingUser = await prisma.user.findUnique({ where: { email } })
 
     if (existingUser) {
       return NextResponse.json({ error: "User already exists" }, { status: 409 })
     }
 
-    // Create a new user
     const newUser = await prisma.user.create({
       data: { email, password },
     })

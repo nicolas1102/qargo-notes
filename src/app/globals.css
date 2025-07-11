@@ -122,7 +122,5 @@
 }
 
 body {
-  /* optional: scroll only on note area */
-  /* overflow: hidden; */
   margin: 0;
 }
