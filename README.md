@@ -94,7 +94,6 @@ Create a `.env` file with the following:
 
 ```
 DATABASE_URL=postgresql://<your-neon-url>
-NEXT_PUBLIC_PAYLOAD_SECRET=some-secret-key
 ```
 
 ### 4. Push schema and generate client
